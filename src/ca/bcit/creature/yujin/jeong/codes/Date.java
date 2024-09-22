@@ -1,4 +1,4 @@
-package ca.bcit.creature.yujin.jeong;
+package ca.bcit.creature.yujin.jeong.codes;
 
 /**
  * This class models date formats.
@@ -7,8 +7,9 @@ package ca.bcit.creature.yujin.jeong;
  * getDayOfTheWeek() between the every step)
  * Lastly, printing the date in two different formats ("YYYY-MM-DD" and "Month(in String) DD, YYYY").
  *
- * @author Gem Baojimin sha
  * @author Yujin Jeong
+ * @author Tommy Phuong
+ * @author Evan Vink
  * @version 1.0
  */
 
@@ -48,13 +49,54 @@ public class Date
 
     // Creating static variables to assign starting and ending year of 1800s and 2000s.
     private static final int STARTING_YEAR_OF_1800S = 1800;
-    final                int ENDING_YEAR_OF_1800S   = 1899;
-    final                int STARTING_YEAR_OF_2000S = 2000;
+    private static final int ENDING_YEAR_OF_1800S   = 1899;
+    private static final int STARTING_YEAR_OF_2000S = 2000;
 
     // Creating variables to get day, month, year, and current date.
     final int day;
     final int month;
     final int year;
+
+    // Creating local variables to add value in Step 0 in getDayOfTheWeek method.
+    private final int startZeroStep0 = 0;
+    private final int addTwoStep0    = 2;
+    private final int addSixStep0    = 6;
+
+    // Creating local variable to find remainder of step1 by 100 in getDayOfTheWeek method.
+    private final int remainderHundredStep1 = 100;
+
+    // Creating local variable to divide step1 by 12 in getDayOfTheWeek method.
+    private final int divideTwelveStep2 = 12;
+
+    // Creating local variable to find remainder of Step3 by 12 in getDayOfTheWeek method.
+    private final int remainderTwelveStep3 = 12;
+
+    // Creating local variable to divide step4 by 4 in getDayOfTheWeek method.
+    private final int divideFourStep4 = 4;
+
+    // Creating local variables to add values depending on the month code in getDayOfTheWeek method.
+    // (Month code: JAN = 1/FAB= 4/MAR = 4/APR = 0/MAY = 2/JUN = 5/JULY = 0/AUG = 3/SEP = 6/OCT = 1/NOV = 4/DEC = 6)
+    private final int addZeroStep6  = 0;
+    private final int addOneStep6   = 1;
+    private final int addTwoStep6   = 2;
+    private final int addThreeStep6 = 3;
+    private final int addFourStep6  = 4;
+    private final int addFiveStep6  = 5;
+    private final int addSixStep6   = 6;
+
+    // Creating local variable to find remainder of step7 by 7 in getDayOfTheWeek method.
+    private final int remainderSevenStep7 = 7;
+
+    // Creating local variables to switch remainder of step 7 to the given day in String depending on the day code
+    // in getDayOfTheWeek method.
+    // (Days code: SAT = 0/SUN = 1/MON = 2/TUE = 3/WED = 4/THUR = 5/FRI = 6)
+    private final int dayCodeSat  = 0;
+    private final int dayCodeSun  = 1;
+    private final int dayCodeMon  = 2;
+    private final int dayCodeTues = 3;
+    private final int dayCodeWed  = 4;
+    private final int dayCodeThur = 5;
+    private final int dayCodeFri  = 6;
 
     /**
      * Creating a constructor.
@@ -63,7 +105,9 @@ public class Date
      * @param month will be assigned to the instance data: month
      * @param day   will be assigned to the instance data: day
      */
-    public Date(final int year, final int month, final int day)
+    public Date(final int year,
+                final int month,
+                final int day)
     {
         isYearValid(year);
         isMonthValid(month);
@@ -224,7 +268,9 @@ public class Date
      * @param day check if the day is valid
      * @throws IllegalArgumentException if the day is out of range
      */
-    private static void isDayValid(final int year, final int month, final int day) throws IllegalArgumentException
+    private static void isDayValid(final int year,
+                                   final int month,
+                                   final int day) throws IllegalArgumentException
     {
         final int maxDaysOfMonth;
 
@@ -242,7 +288,8 @@ public class Date
      * @param year take different number of days in February and check if it's leap year
      * @return the number of days
      */
-    private static int numbOfDaysInMonth(final int month, final int year) throws IllegalArgumentException
+    private static int numbOfDaysInMonth(final int month,
+                                         final int year) throws IllegalArgumentException
     {
 
         switch(month)
@@ -289,47 +336,6 @@ public class Date
      */
     public String getDayOfTheWeek() throws IllegalArgumentException
     {
-
-        // Creating local variables to add value in Step 0.
-        final int startZeroStep0 = 0;
-        final int addTwoStep0    = 2;
-        final int addSixStep0    = 6;
-
-        // Creating local variable to find remainder of step1 by 100
-        final int remainderHundredStep1 = 100;
-
-        // Creating local variable to divide step1 by 12
-        final int divideTwelveStep2 = 12;
-
-        // Creating local variable to find remainder of Step3 by 12
-        final int remainderTwelveStep3 = 12;
-
-        // Creating local variable to divide step4 by 4
-        final int divideFourStep4 = 4;
-
-        // Creating local variables to add values depending on the month code
-        // (Month code: JAN = 1/FAB= 4/MAR = 4/APR = 0/MAY = 2/JUN = 5/JULY = 0/AUG = 3/SEP = 6/OCT = 1/NOV = 4/DEC = 6)
-        final int addZeroStep6  = 0;
-        final int addOneStep6   = 1;
-        final int addTwoStep6   = 2;
-        final int addThreeStep6 = 3;
-        final int addFourStep6  = 4;
-        final int addFiveStep6  = 5;
-        final int addSixStep6   = 6;
-
-        // Creating local variable to find remainder of step7 by 7
-        final int remainderSevenStep7 = 7;
-
-        // Creating local variables to switch remainder of step 7 to the given day in String depending on the day code.
-        // (Days code: SAT = 0/SUN = 1/MON = 2/TUE = 3/WED = 4/THUR = 5/FRI = 6)
-        final int dayCodeSat  = 0;
-        final int dayCodeSun  = 1;
-        final int dayCodeMon  = 2;
-        final int dayCodeTues = 3;
-        final int dayCodeWed  = 4;
-        final int dayCodeThur = 5;
-        final int dayCodeFri  = 6;
-
         final String dayOfWeek;
 
         // Step0: add 6(for Jan/Feb dates in leap years or for all dates in the 2000s),
@@ -444,28 +450,23 @@ public class Date
     }
 
     /**
-     * Creating a method to compare birthdate and current date, making sure birthdate doesn't go more than current date
-     * Firstly, check if the date of birth year is the same as current year. If not the same, subtracting follow code
-     * Secondly, check if the date of birth month is the same as current month. If not the same, subtracting follow code
-     * Thirdly, in case check the both days too
-     * Lastly, if return value is negative than date of birth is before the current date. If it's 0 then both dates are
-     * the same, and positive value will return date of birth is after the current date, which is wrong.
+     * Creating a method to compare birthdate and current date, making sure birthdate doesn't go more than current date.
+     * Firstly, throw IllegalArgumentException if birth year is grater than current year.
+     * Secondly, throw IllegalArgumentException if birth year is the same as current year, and birth month is grater
+     * than current month.
+     * Thirdly, throw IllegalArgumentException if birth year is the same as current year, and birth month is the same as
+     * current month, and birthday is grater than current day.
      *
-     * @param currentDate
+     * @param currentDate 2024.SEP.21
      *
-     * @return
+     * @return true if brithday doesn't go over current date.
      */
-    public int compareTo(final Date currentDate)
+    public void validateDate(final Date currentDate)
     {
-        if(this.year != currentDate.year)
+        if((this.year > currentDate.year) || (this.year == currentDate.year && this.month > currentDate.month) || (this.year == currentDate.year && this.month == currentDate.month && this.day > currentDate.day))
         {
-            return this.year - currentDate.year;
+            throw new IllegalArgumentException("Invalid date!");
         }
-        if(this.month != currentDate.month)
-        {
-            return this.month - currentDate.month;
-        }
-        return this.day - currentDate.day;
     }
 
 }

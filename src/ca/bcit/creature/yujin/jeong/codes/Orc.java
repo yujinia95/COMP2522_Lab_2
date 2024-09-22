@@ -1,18 +1,17 @@
-package ca.bcit.creature.yujin.jeong;
+package ca.bcit.creature.yujin.jeong.codes;
 
 /**
  * This class models Orc from a parent class Creature.
  * <p>
- * validateRage() to set range of rage between 0 and 30.
- * <p>
- * validateParameter() to validate data in parameter. Name can't be null or empty, date of birth must be over
- * currentDate, also health must be over 0 as well.
+ * validateRage() to set range of rage between minRage and maxRage.
  * <p>
  * getDetails() to prints the creature's name, dateOfBirth, age, health, and rage.
  * <p>
  * berserk() to use skill "berserk". Skill is unavailable to use when low rage.
  *
  * @author Yujin Jeong
+ * @author Tommy Phuong
+ * @author Evan Vink
  * @version 1.0
  */
 public class Orc extends Creature
@@ -22,6 +21,12 @@ public class Orc extends Creature
     private int rage;
 
     private final int maxRage = 30;
+    final         int minRage = 0;
+
+    private final int minRageUsage        = 5;
+    private final int minDoubleDamageMode = 20;
+    private final int normalDamage        = 15;
+    private final int doubleDamage        = 30;
 
     /**
      * Creating a constructor. Validating name, date of birth, health, and rage in constructor.
@@ -31,47 +36,25 @@ public class Orc extends Creature
      * @param health      creatures' health
      * @param rage        Orc's rage
      */
-    public Orc(final String name, final Date dateOfBirth, final int health, final int rage)
+    public Orc(final String name,
+               final Date dateOfBirth,
+               final int health,
+               final int rage)
     {
         super(name, dateOfBirth, health);
 
-        validateParameter(name, dateOfBirth, health);
         validateRage(rage);
 
         this.rage = rage;
     }
 
     /**
-     * Creating a method to validate data in parameter.
-     * Name can't be null or empty, date of birth must be over currentDate, also health must be over 0 as well.
-     *
-     * @param name        creature's name
-     * @param dateOfBirth creature's date of birth
-     * @param health      creatures' health
-     */
-    protected void validateParameter(final String name, final Date dateOfBirth, final int health)
-    {
-        final Date currentDate = new Date(2024, 9, 15);
-
-        // Validating name
-        validateName(name);
-        // Validating date of birth
-        validateBirthDate(dateOfBirth, currentDate);
-        // Validating health
-        validHealth(health);
-    }
-
-    /**
-     * Creating a method to set range of rage between 0 and 30.
+     * Creating a method to set range of rage between minRage and maxRage.
      *
      * @param rage from orc
      */
     protected void validateRage(final int rage)
     {
-        final int minRage;
-
-        minRage = 0;
-
         if(rage < minRage || rage > maxRage)
         {
             throw new IllegalArgumentException(String.format("Rage can't go below %d and above %d", minRage, maxRage));
@@ -91,8 +74,9 @@ public class Orc extends Creature
         builder = new StringBuilder();
 
         builder.append(super.getDetails());
-        builder.append(" , Rage: ");
+        builder.append("\nRage: ");
         builder.append(rage);
+        builder.append("\n");
 
         return builder.toString();
     }
@@ -104,16 +88,6 @@ public class Orc extends Creature
      */
     public void berserk(Creature anotherCreature)
     {
-        final int minRageUsage;
-        final int minDoubleDamageMode;
-        final int normalDamage;
-        final int doubleDamage;
-
-        minRageUsage        = 5;
-        minDoubleDamageMode = 20;
-        normalDamage        = 15;
-        doubleDamage        = 30;
-
         rage += minRageUsage;
 
         if(rage >= minRageUsage && rage < minDoubleDamageMode)

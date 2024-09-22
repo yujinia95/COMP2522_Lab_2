@@ -1,12 +1,9 @@
-package ca.bcit.creature.yujin.jeong;
+package ca.bcit.creature.yujin.jeong.codes;
 
 /**
  * This class models Dragon from a parent class Creature.
  * <p>
- * validateParameter() to validate data in parameter. Name can't be null or empty, date of birth must be over
- * currentDate, also health must be over 0 as well.
- * <p>
- * validateFirePower() to set range of firepower between 0 and 100.
+ * validateFirePower() to set range of firepower between minFirePower and maxFirePower.
  * <p>
  * getDetails() to prints the creature's name, dateOfBirth, age, health, and firepower.
  * <p>
@@ -15,6 +12,8 @@ package ca.bcit.creature.yujin.jeong;
  * restoreFirePower() to restore Fire power for using breatherFire skill.
  *
  * @author Yujin Jeong
+ * @author Tommy Phuong
+ * @author Evan Vink
  * @version 1.0
  */
 public class Dragon extends Creature
@@ -23,7 +22,13 @@ public class Dragon extends Creature
     // Cannot make as final, because firePower value changes the value under the conditions
     private int firePower;
 
+    // Setting max and min firepower
     private final int maxFirePower = 100;
+    private final int minFirePower = 0;
+
+    // Setting max and min firepower usage
+    final int minFirePowerUsage = 10;
+    final int firePowerDamage   = 20;
 
     /**
      * Creating a constructor. Validating name, date of birth, health, and firepower in constructor.
@@ -33,51 +38,25 @@ public class Dragon extends Creature
      * @param health      creatures' health
      * @param firePower   dragon's firePower
      */
-    public Dragon(final String name, final Date dateOfBirth, final int health, final int firePower)
+    public Dragon(final String name,
+                  final Date dateOfBirth,
+                  final int health,
+                  final int firePower)
     {
         super(name, dateOfBirth, health);
 
         // Validate parameters
-        validateParameter(name, dateOfBirth, health);
         validateFirePower(firePower);
-
         this.firePower = firePower;
     }
 
     /**
-     * Creating a method to validate data in parameter.
-     * Name can't be null or empty, date of birth must be over currentDate, also health must be over 0 as well.
-     *
-     * @param name        creature's name
-     * @param dateOfBirth creature's date of birth
-     * @param health      creatures' health
-     */
-    protected void validateParameter(final String name, final Date dateOfBirth, final int health)
-    {
-        final Date currentDate;
-
-        currentDate = new Date(2024, 9, 15);
-
-        // Validating name
-        validateName(name);
-        // Validating date of birth
-        validateBirthDate(dateOfBirth, currentDate);
-        // Validating health
-        validHealth(health);
-
-    }
-
-    /**
-     * Creating a method to set range of firepower between 0 and 100.
+     * Creating a method to set range of firepower between minFirePower and maxFirePower.
      *
      * @param firePower from dragon
      */
     protected void validateFirePower(final int firePower)
     {
-        final int minFirePower;
-
-        minFirePower = 0;
-
         if(firePower < minFirePower || firePower > maxFirePower)
         {
             throw new IllegalArgumentException(String.format("Fire power can't go below %d and above %d", minFirePower, maxFirePower));
@@ -97,8 +76,9 @@ public class Dragon extends Creature
         builder = new StringBuilder();
 
         builder.append(super.getDetails());
-        builder.append(" , Firepower: ");
+        builder.append("\nFirepower: ");
         builder.append(firePower);
+        builder.append("\n");
 
         return builder.toString();
     }
@@ -112,12 +92,6 @@ public class Dragon extends Creature
      */
     public void breatheFire(Creature anotherCreature) throws LowFirePowerException
     {
-        final int minFirePowerUsage;
-        final int firePowerDamage;
-
-        minFirePowerUsage = 10;
-        firePowerDamage   = 20;
-
         if(firePower >= minFirePowerUsage)
         {
             firePower -= minFirePowerUsage;

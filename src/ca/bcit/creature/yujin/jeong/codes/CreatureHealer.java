@@ -1,4 +1,4 @@
-package ca.bcit.creature.yujin.jeong;
+package ca.bcit.creature.yujin.jeong.codes;
 
 import java.util.Random;
 
@@ -7,13 +7,18 @@ import java.util.Random;
  * <p>
  * healCreature() to heal creature randomly from 1 to 100.
  * <p>
- * * @author Yujin Jeong
- * * @version 1.0
+ *
+ * @author Yujin Jeong
+ * @author Tommy Phuong
+ * @author Evan Vink
+ * @version 1.0
  */
 public class CreatureHealer
 {
 
-    private int healAmount;
+    private       int healAmount;
+    private final int maxRandomNumb = 100;
+    private final int minRandomNumb = 1;
 
     public CreatureHealer(final int healAmount)
     {
@@ -21,7 +26,7 @@ public class CreatureHealer
     }
 
     /**
-     * Creating a method to heal creature randomly from 1 to 100.
+     * Creating a method to heal creature randomly from minRandomNumb to maxRandomNumb.
      *
      * @param anotherCreature creature (Dragon, Elf, and Orc)
      *
@@ -34,7 +39,7 @@ public class CreatureHealer
         random = new Random();
 
         // Range from 1 to 100
-        healAmount = random.nextInt(100) + 1;
+        healAmount = random.nextInt(maxRandomNumb) + minRandomNumb;
 
         anotherCreature.heal(healAmount);
 

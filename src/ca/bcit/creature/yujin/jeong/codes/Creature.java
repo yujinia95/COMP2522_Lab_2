@@ -1,21 +1,17 @@
-package ca.bcit.creature.yujin.jeong;
+package ca.bcit.creature.yujin.jeong.codes;
 
 /**
  * <p> This class models Creature.
  * validateName() to check if name is valid (No null, no empty String).
  * <p>
- * validateBirthDate() Validating if name is valid (No null, no empty String).
+ * validateHealth() to check if the health can't go below minHealth.
  * <p>
- * validateHealth() to check if the given date of birth is not after the current date. If return value is negative
- * than date of birth is before the current date. If it's 0 then both dates are the same, and positive value will
- * return date of birth is after the current date, which is not supposed to be.
+ * isAlive() to return true if health is greater than minHealth.
  * <p>
- * isAlive() to return true if health is greater than 0.
+ * takeDamage() to apply the amount of damage to health. Also, prevent health going below minHealth,
+ * and negative damage.
  * <p>
- * takeDamage() to apply the amount of damage to health. Also, prevent health going below zero, and damage going
- * below zero as well.
- * <p>
- * heal() to increase health by healing and setting the range of healing from 0 to 100.
+ * heal() to increase health by healing and setting the range of healing from minHealAmount too maxHealAmount.
  * <p>
  * getAgeYears() to calculate age based on current date. If birth month is above current month or if the birth month.
  * and current month are the same but the day of birthday is after the current day, the age is decreased by one year.
@@ -23,6 +19,8 @@ package ca.bcit.creature.yujin.jeong;
  * getDetails() to prints the creature's name, dateOfBirth, age, and health. </p>
  *
  * @author Yujin Jeong
+ * @author Tommy Phuong
+ * @author Evan Vink
  * @version 1.0
  */
 public class Creature
@@ -36,8 +34,22 @@ public class Creature
     private int health;
     private int age;
 
-    //Creating global variable to set minimum health is above 0.
+    // Current date
+    private final int currentYear  = 2024;
+    private final int currentMonth = 9;
+    private final int currentDay   = 15;
+
+    // Creating global variable to set minimum health is above zero.
     private final int minHealth = 0;
+
+    // Creating global variable set health can't go below zero.
+    final int healthAboveZero = 0;
+
+    // Creating global variable to set minimum heal amount and maximum heal amount
+    final int maxHealAmount = 100;
+    final int minHealAmount = 0;
+
+    final int minDamage = 0;
 
     /**
      * Creating a constructor. Validating name and date of birth in constructor.
@@ -46,14 +58,16 @@ public class Creature
      * @param dateOfBirth date of birth
      * @param health      creature's health
      */
-    protected Creature(final String name, final Date dateOfBirth, final int health)
+    public Creature(final String name,
+                    final Date dateOfBirth,
+                    final int health)
     {
         // Initializing current date before validate the date of birth and age
-        this.currentDate = new Date(2024, 9, 15);
+        this.currentDate = new Date(currentYear, currentMonth, currentDay);
 
         // Validating name,date of birth and current date
         validateName(name);
-        validateBirthDate(dateOfBirth, currentDate);
+        dateOfBirth.validateDate(currentDate);
 
         this.name        = name;
         this.dateOfBirth = dateOfBirth;
@@ -66,7 +80,7 @@ public class Creature
      *
      * @param name Creature name
      */
-    protected void validateName(final String name)
+    public void validateName(final String name)
     {
         if(name == null || name.isEmpty())
         {
@@ -75,36 +89,12 @@ public class Creature
     }
 
     /**
-     * Creating a method to check if the given date of birth is not after the current date.
-     * If return value is negative than date of birth is before the current date. If it's 0 then both dates are
-     * the same, and positive value will return date of birth is after the current date, which is not supposed to be.
-     *
-     * @param dateOfBirth date of birth
-     * @param currentDate current date
-     */
-    protected void validateBirthDate(final Date dateOfBirth, final Date currentDate)
-    {
-
-        final int zeroChecksValidBirthDate;
-
-        zeroChecksValidBirthDate = 0;
-
-        if(dateOfBirth.compareTo(currentDate) > zeroChecksValidBirthDate)
-        {
-            throw new IllegalArgumentException("You cannot type your date of birth after the current date :/");
-        }
-    }
-
-    /**
-     * Creating a method to set health can't go below 0.
+     * Creating a method to set health can't go below minHealth.
      *
      * @param health Dragon's health
      */
-    protected void validHealth(final int health)
+    public void validHealth(final int health)
     {
-        final int healthAboveZero;
-
-        healthAboveZero = 0;
 
         if(health < healthAboveZero)
         {
@@ -113,11 +103,11 @@ public class Creature
     }
 
     /**
-     * Creating a method to return true if health is greater than 0.
+     * Creating a method to return true if health is greater than minHealth.
      *
      * @param health creature's health
      */
-    protected boolean isAlive(final int health)
+    public boolean isAlive(final int health)
     {
         return health > minHealth;
     }
@@ -128,13 +118,8 @@ public class Creature
      *
      * @param damage from attack
      */
-    protected void takeDamage(final int damage)
+    public void takeDamage(final int damage)
     {
-
-        final int minDamage;
-
-        minDamage = 0;
-
         if(damage < minDamage)
         {
             throw new DamageException("Damage cannot be negative :/");
@@ -144,7 +129,7 @@ public class Creature
             health -= damage;
         }
 
-        // If health goes negative, set as 0
+        // If health goes negative, set as minHealth
         if(health < minHealth)
         {
             health = minHealth;
@@ -152,22 +137,17 @@ public class Creature
     }
 
     /**
-     * Creating a method to increase health by healing and setting the range of healing from 0 to 100.
+     * Creating a method to increase health by healing and setting the range of healing from minHealAmount to
+     * maxHealAmount.
      *
      * @param healAmount heal health
      *
-     * @throws HealingException set healing range to make sure not go below 0
+     * @throws HealingException set healing range to make sure not go below minHealAmount
      */
-    protected void heal(final int healAmount) throws HealingException
+    public void heal(final int healAmount) throws HealingException
     {
 
-        final int maxHealAmount;
-        final int minHealAmount;
-
-        maxHealAmount = 100;
-        minHealAmount = 0;
-
-        // Set range of healing from 0 to 100
+        // Set range of healing from minHealAmount to maxHealAmount
         if(healAmount > maxHealAmount || healAmount < minHealAmount)
         {
             throw new HealingException(String.format("Heal amount cannot be negative or exceed %d :/", maxHealAmount));
@@ -177,7 +157,7 @@ public class Creature
             health += healAmount;
         }
 
-        // If health go above 100 set as 100 (Used for healCreature() in CreatureHealer)
+        // If health goes above maxHealthAmount set as maxHealthAmount (Used for healCreature() in CreatureHealer)
         if(health > maxHealAmount)
         {
             health = maxHealAmount;
@@ -193,7 +173,8 @@ public class Creature
      *
      * @return ageYear after calculate the age
      */
-    protected int getAgeYears(final Date dateOfBirth, final Date currentDate)
+    public int getAgeYears(final Date dateOfBirth,
+                           final Date currentDate)
     {
 
         age = currentDate.getYear() - dateOfBirth.getYear();
@@ -221,11 +202,11 @@ public class Creature
 
         builder.append("Creature's name: ");
         builder.append(name);
-        builder.append(" , Date of Birth: ");
+        builder.append("\nDate of Birth: ");
         builder.append(dateOfBirth.getYYYYMMDD());
-        builder.append(" , Age: ");
+        builder.append("\nAge: ");
         builder.append(age);
-        builder.append(" , Health: ");
+        builder.append("\nHealth: ");
         builder.append(health);
 
         return builder.toString();
